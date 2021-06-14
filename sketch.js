@@ -1,5 +1,6 @@
 let mobileNet;
 let video;
+var label;
 
 function modelReady() {
   console.log("model Ready");
@@ -15,21 +16,24 @@ function gotResults(error, res) {
     console.log(error);
   } else {
     console.log(res);
-    let label = res[0].label;
-    fill(0);
-    textSize(64);
-    text(label, 10, height - 100);
+    label = res[0].label;
+
     mobileNet.predict(gotResults);
   }
 }
 function setup() {
-  createCanvas(500, 400);
-  video = createCapture(VIDEO, videoIsReady);
-  background(0);
+  createCanvas(640, 500);
+  video = createCapture(VIDEO);
+
   video.hide();
+  background(0);
   mobileNet = ml5.imageClassifier("MobileNet", video, videoIsReady);
 }
 
 function draw() {
-  image(video, 0, 0, width, height);
+  background(0);
+  image(video, 0, 0);
+  fill(255);
+  textSize(18);
+  text(label, 10, height - 5);
 }
